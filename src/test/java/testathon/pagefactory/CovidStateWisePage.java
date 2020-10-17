@@ -66,38 +66,37 @@ public class CovidStateWisePage {
 	public CovidStateWisePage getDistricts() {
 		// seleniumUtils.implicitwait();
 
-		seleniumUtils.waitforVisibilityElement(btnViewAll);
+		if (!(driver.getCurrentUrl().contains("state/CH") || driver.getCurrentUrl().contains("state/GA"))) {
+			seleniumUtils.waitforVisibilityElement(btnViewAll);
 
-		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", btnViewAll);
-
-		if (btnViewAll.isDisplayed())
+			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", btnViewAll);
 			btnViewAll.click();
 
-		testLogger.info("state: " + lblStateName.getText());
+			testLogger.info("state: " + lblStateName.getText());
 
-		String districtData = tblDistricts.getText().trim();
-		String[] districtDataArray = districtData.split("\n");
+			String districtData = tblDistricts.getText().trim();
+			String[] districtDataArray = districtData.split("\n");
 
-		String expectedDistricts = GetCovidResponseByState();
+			String expectedDistricts = GetCovidResponseByState();
 
-		List<District> lstDistrict = new ArrayList<>();
+			List<District> lstDistrict = new ArrayList<>();
 
-		for (int i = 0; i < districtDataArray.length; i = i + 2) {
+			for (int i = 0; i < districtDataArray.length; i = i + 2) {
 
-			String districtName = districtDataArray[i + 1];
-			String activeCases = districtDataArray[i].replace(",", "");
+				String districtName = districtDataArray[i + 1];
+				String activeCases = districtDataArray[i].replace(",", "");
 
-			District district = new District(districtName, activeCases);
+				District district = new District(districtName, activeCases);
 
-//			int activeExpected = GetCovidResponseByStateDist(expectedDistricts, lblStateName.getText(), districtName);
-//			assertEquals(Integer.parseInt(activeCases), activeExpected, "verification of active cases");
+//				int activeExpected = GetCovidResponseByStateDist(expectedDistricts, lblStateName.getText(), districtName);
+//				assertEquals(Integer.parseInt(activeCases), activeExpected, "verification of active cases");
 
-			lstDistrict.add(district);
+				lstDistrict.add(district);
 
+			}
+
+			testLogger.info("Total Districts: " + lstDistrict.size());
 		}
-
-		testLogger.info("Total Districts: " + lstDistrict.size());
-
 		return this;
 	}
 

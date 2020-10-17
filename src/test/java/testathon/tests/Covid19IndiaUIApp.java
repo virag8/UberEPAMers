@@ -23,7 +23,7 @@ import test.java.testathon.utils.Report;
 
 public class Covid19IndiaUIApp extends BaseUITest {
 
-	private static final int MaxStates = 1;
+	private static final int MaxStates = 3;
 
 	@Test(enabled = true)
 	public void testVerifyDistrict() throws InterruptedException {
