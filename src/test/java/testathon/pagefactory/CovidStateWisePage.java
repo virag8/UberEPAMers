@@ -35,7 +35,7 @@ public class CovidStateWisePage {
 		this.driver = driver;
 		seleniumUtils = new SeleniumUtils(this.driver);
 		testLogger = Report.getInstance().getTest();
-		driver.get("https://www.covid19india.org/state/BR");
+		// driver.get("https://www.covid19india.org/state/BR");
 
 		// TODO Auto-generated constructor stub
 		if (!driver.getTitle().contains("Coronavirus Outbreak in")) {
@@ -59,7 +59,8 @@ public class CovidStateWisePage {
 
 		seleniumUtils.waitforVisibilityElement(btnViewAll);
 
-		btnViewAll.click();
+		if (btnViewAll.isDisplayed())
+			btnViewAll.click();
 
 		testLogger.info("state: " + lblStateName.getText());
 
