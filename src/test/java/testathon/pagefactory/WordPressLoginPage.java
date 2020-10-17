@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import pojo.UiDetails;
 
 public class WordPressLoginPage {
 
@@ -76,7 +77,7 @@ public class WordPressLoginPage {
 			metadata.click();
 			Thread.sleep(3000);
 			driver.navigate().back();
-			
+			Thread.sleep(3000);
 			//ratioheader.click();
 			ratio = driver
 					.findElements(By.xpath("//div[@class='table fadeInUp']//div[@class='row']/div[11]/div"));
