@@ -55,8 +55,8 @@ public class CovidHomePage {
 			data.setRatio(ratio.get(i).getText());
 			data.setStateName(states.get(i).getText());
 			data.setConfirmed(confirmed.get(i).getText());
-			data.setRecovered(activated.get(i).getText());
-			data.setActivated(recovered.get(i).getText());
+			data.setRecovered(recovered.get(i).getText());
+			data.setActivated(activated.get(i).getText());
 			statesData.add(data);
 			states.get(i).click();
 			metadata.click();
