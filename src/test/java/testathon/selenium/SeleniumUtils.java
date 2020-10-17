@@ -12,48 +12,47 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class SeleniumUtils {
 	WebDriver driver;
-	public SeleniumUtils(WebDriver driver)
-	{
-		this.driver=driver;
+
+	public SeleniumUtils(WebDriver driver) {
+		this.driver = driver;
 	}
-	
-	public void Hover(WebElement element){
-		Actions actions=new Actions(driver);
+
+	public void Hover(WebElement element) {
+		Actions actions = new Actions(driver);
 		actions.moveToElement(element);
 	}
-	
-	public void selectByText(WebElement element,String text)
-	{
-		Select select=new Select(element);
+
+	public void selectByText(WebElement element, String text) {
+		Select select = new Select(element);
 		select.selectByVisibleText(text);
 	}
-	public void selectByIndex(WebElement element,int index)
-	{
-		Select select=new Select(element);
+
+	public void selectByIndex(WebElement element, int index) {
+		Select select = new Select(element);
 		select.selectByIndex(index);
 	}
-	public void selectByOption(WebElement element,String text)
-	{
-		Select select=new Select(element);
+
+	public void selectByOption(WebElement element, String text) {
+		Select select = new Select(element);
 		select.selectByValue(text);
 	}
-	
-	public void javasctiptClick(WebElement element){
-		JavascriptExecutor js = (JavascriptExecutor) driver;  
-		js.executeScript("arguments[0].click();",element);
+
+	public void javasctiptClick(WebElement element) {
+		JavascriptExecutor js = (JavascriptExecutor) driver;
+		js.executeScript("arguments[0].click();", element);
 	}
-	
-	public void implicitwait()
-	{
+
+	public void implicitwait() {
 		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 	}
-	
-	public void waitforVisibilityElement(WebElement element){
-		WebDriverWait wait=new WebDriverWait(driver, 60);
+
+	public void waitforVisibilityElement(WebElement element) {
+		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.visibilityOf(element));
 	}
-	public void waitforInVisibilityElement(WebElement element){
-		WebDriverWait wait=new WebDriverWait(driver, 60);
+
+	public void waitforInVisibilityElement(WebElement element) {
+		WebDriverWait wait = new WebDriverWait(driver, 60);
 		wait.until(ExpectedConditions.invisibilityOf(element));
 	}
 

@@ -13,18 +13,10 @@ import org.openqa.selenium.support.PageFactory;
 
 import pojo.UiDetails;
 
-public class WordPressLoginPage {
+public class CovidHomePage {
 
 	protected WebDriver driver;
 
-	@FindBy(how = How.ID, using = "wp-submit")
-	private WebElement btnSubmit;
-
-	@FindBy(how = How.ID, using = "user_login")
-	private WebElement tbUserLogin;
-
-	@FindBy(how = How.ID, using = "user_pass")
-	private WebElement tbUserPassword;
 	@FindBy(how = How.XPATH, using = "//div[@class='expand-table-toggle']")
 	private WebElement expand;
 
@@ -33,24 +25,13 @@ public class WordPressLoginPage {
 	@FindBy(how = How.XPATH, using = "//div[@class='state-page']")
 	private WebElement metadata;
 
-	public WordPressLoginPage(WebDriver driver) {
+	public CovidHomePage(WebDriver driver) {
 		this.driver = driver;
 		// TODO Auto-generated constructor stub
 		driver.get("https://www.covid19india.org/");
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(60, TimeUnit.SECONDS);
 		PageFactory.initElements(driver, this);
-	}
-
-	public WordPressHomePage Login(String userId, String password) {
-
-		tbUserLogin.sendKeys(userId);
-
-		tbUserPassword.sendKeys(password);
-
-		btnSubmit.click();
-
-		return new WordPressHomePage(driver);
 	}
 
 	public List<UiDetails> getValidThreeStates(int count) throws InterruptedException {
@@ -79,6 +60,11 @@ public class WordPressLoginPage {
 			statesData.add(data);
 			states.get(i).click();
 			metadata.click();
+			//
+			CovidStateWisePage districtPage = new CovidStateWisePage(driver);
+
+			districtPage.getDistricts();
+
 			Thread.sleep(3000);
 			driver.navigate().back();
 			Thread.sleep(3000);
