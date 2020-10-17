@@ -67,7 +67,7 @@ public class Covid19IndiaUIApp extends BaseUITest {
 		return statedetails;
 	}
 
-	public void GetCovidResponseByStateDist(String statename) {
+	public String GetCovidResponseByStateDist(String statename, String districtname) {
 
 		// Set base uri
 		RestAssured.baseURI = "https://api.covid19india.org";
@@ -83,8 +83,8 @@ public class Covid19IndiaUIApp extends BaseUITest {
 
 		String responseBody = response.getBody().asString();
 
-		LinkedHashMap HashMap = JsonPath.read(responseBody, "$." + statename + ".districtData");
-
+		LinkedHashMap HashMap = JsonPath.read(responseBody, "$." + statename + ".districtData." + districtname);
+		return (String) HashMap.get("active");
 	}
 
 }

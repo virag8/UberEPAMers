@@ -1,8 +1,11 @@
 package test.java.testathon.pagefactory;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.openqa.selenium.JavascriptExecutor;
@@ -11,9 +14,14 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
+import org.testng.Assert;
 
 import com.aventstack.extentreports.ExtentTest;
+import com.jayway.jsonpath.JsonPath;
 
+import io.restassured.RestAssured;
+import io.restassured.response.Response;
+import io.restassured.specification.RequestSpecification;
 import test.java.testathon.selenium.SeleniumUtils;
 import test.java.testathon.utils.Report;
 
@@ -70,14 +78,19 @@ public class CovidStateWisePage {
 		String districtData = tblDistricts.getText().trim();
 		String[] districtDataArray = districtData.split("\n");
 
+		String expectedDistricts = GetCovidResponseByState();
+
 		List<District> lstDistrict = new ArrayList<>();
 
 		for (int i = 0; i < districtDataArray.length; i = i + 2) {
 
 			String districtName = districtDataArray[i + 1];
-			String activeCases = districtDataArray[i];
+			String activeCases = districtDataArray[i].replace(",", "");
 
 			District district = new District(districtName, activeCases);
+
+//			int activeExpected = GetCovidResponseByStateDist(expectedDistricts, lblStateName.getText(), districtName);
+//			assertEquals(Integer.parseInt(activeCases), activeExpected, "verification of active cases");
 
 			lstDistrict.add(district);
 
@@ -86,6 +99,31 @@ public class CovidStateWisePage {
 		testLogger.info("Total Districts: " + lstDistrict.size());
 
 		return this;
+	}
+
+	public String GetCovidResponseByState() {
+
+		// Set base uri
+		RestAssured.baseURI = "https://api.covid19india.org";
+
+		// Request specification
+		RequestSpecification httpRequest = RestAssured.given();
+
+		// Specifying the method and getting response
+		Response response = httpRequest.get("/state_district_wise.json");
+
+		Assert.assertEquals(response.getStatusCode(), 200);
+		assertThat("Response code is 200", response.getStatusCode(), equalTo(200));
+
+		String responseBody = response.getBody().asString();
+
+		return responseBody;
+	}
+
+	public int GetCovidResponseByStateDist(String responseBody, String statename, String districtname) {
+
+		LinkedHashMap HashMap = JsonPath.read(responseBody, "$." + statename + ".districtData." + districtname);
+		return (int) HashMap.get("active");
 	}
 
 }

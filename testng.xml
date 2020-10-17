@@ -12,6 +12,14 @@
             <class name="test.java.testathon.tests.Covid19IndiaUIApp"/>
         </classes>
     </test>
+    
+    <test thread-count="1" name="TestChromeMobileBrowser" parallel="methods">
+        <parameter name="env" value="local-chrome-emulator"/>
+        <parameter name="env_params" value="deviceName=Nexus 5" />
+        <classes>
+            <class name="test.java.testathon.tests.Covid19IndiaUIApp"/>
+        </classes>
+    </test>
 
     <!--
     <test thread-count="2" name="TestChromeBrowserStack" parallel="methods">
