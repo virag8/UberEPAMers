@@ -4,12 +4,14 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.testng.Assert.assertEquals;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.aventstack.extentreports.Status;
+import com.jayway.jsonpath.JsonPath;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -63,6 +65,26 @@ public class Covid19IndiaUIApp extends BaseUITest {
 
 		Statewise statedetails = statewise.stream().filter(a -> a.getState().equals(statename)).findFirst().get();
 		return statedetails;
+	}
+
+	public void GetCovidResponseByStateDist(String statename) {
+
+		// Set base uri
+		RestAssured.baseURI = "https://api.covid19india.org";
+
+		// Request specification
+		RequestSpecification httpRequest = RestAssured.given();
+
+		// Specifying the method and getting response
+		Response response = httpRequest.get("/state_district_wise.json");
+
+		Assert.assertEquals(response.getStatusCode(), 200);
+		assertThat("Response code is 200", response.getStatusCode(), equalTo(200));
+
+		String responseBody = response.getBody().asString();
+
+		LinkedHashMap HashMap = JsonPath.read(responseBody, "$." + statename + ".districtData");
+
 	}
 
 }
