@@ -12,7 +12,7 @@ import test.java.testathon.utils.Report;
 
 public class UITestWordPressApp extends BaseUITest {
 
-	@Test(enabled = true, dataProvider = "jsonDataProvider")
+	@Test(enabled = false, dataProvider = "jsonDataProvider")
 	public void testWordPressLogin(JSONObject testData) {
 		try {
 			Report.getTest().log(Status.INFO, "TestData: " + testData.toJSONString());
@@ -31,7 +31,7 @@ public class UITestWordPressApp extends BaseUITest {
 		}
 	}
 
-	@Test(enabled = true, dataProvider = "jsonDataProvider")
+	@Test(enabled = false, dataProvider = "jsonDataProvider")
 	public void testWordPressInvalidLogin(JSONObject testData) {
 		try {
 			Report.getTest().log(Status.INFO, "TestData: " + testData.toJSONString());
