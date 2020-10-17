@@ -9,6 +9,8 @@ import test.java.testathon.framework.BaseUITest;
 import test.java.testathon.pagefactory.WordPressHomePage;
 import test.java.testathon.pagefactory.WordPressLoginPage;
 import test.java.testathon.utils.Report;
+import java.util.List;
+import pojo.UiDetails;
 
 public class UITestWordPressApp extends BaseUITest {
 
