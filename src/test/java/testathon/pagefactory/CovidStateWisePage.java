@@ -5,6 +5,7 @@ import static org.testng.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -58,6 +59,8 @@ public class CovidStateWisePage {
 		// seleniumUtils.implicitwait();
 
 		seleniumUtils.waitforVisibilityElement(btnViewAll);
+
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", btnViewAll);
 
 		if (btnViewAll.isDisplayed())
 			btnViewAll.click();
