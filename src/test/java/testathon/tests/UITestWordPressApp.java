@@ -49,5 +49,25 @@ public class UITestWordPressApp extends BaseUITest {
 			throw e;
 		}
 	}
+	@Test(enabled = true)
+	public void testMaximumRatio() throws Exception {
+		try {
+			Report.getTest().log(Status.INFO, "Base page Launch successful");
+			WordPressLoginPage loginPage = new WordPressLoginPage(driverInstance.getDriver());
+			List<UiDetails> data=loginPage.getValidThreeStates(3);
+			for(int i=0;i<3;++i)
+			{
+				System.out.println(data.get(i).getStateName());
+				System.out.println(data.get(i).getRatio());
+				System.out.println(data.get(i).getConfirmed());
+				System.out.println(data.get(i).getRecovered());
+				System.out.println(data.get(i).getActivated());
+			}
+		}
+		catch (Exception e) {
+			// TODO Auto-generated catch block
+			throw e;
+		}
+	}
 
 }
