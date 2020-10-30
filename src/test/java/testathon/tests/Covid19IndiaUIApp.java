@@ -32,6 +32,7 @@ public class Covid19IndiaUIApp extends BaseUITest {
 
 		Report.getTest().log(Status.INFO, "Base page Launch successful");
 		CovidHomePage covidHomePage = new CovidHomePage(driverInstance.getDriver());
+		covidHomePage.sortByPositivityRate();
 
 		List<UiDetails> data = covidHomePage.getValidThreeStates(MaxStates);
 		for (int i = 0; i < data.size(); ++i) {
