@@ -54,6 +54,7 @@ public class BrowserFactory {
 			}
 			break;
 		}
+		Reporter.log("driver launched (" + env + "): " + driver);
 		return driver;
 	}
 
@@ -69,7 +70,6 @@ public class BrowserFactory {
 		chromeOptions.setExperimentalOption("mobileEmulation", mobileEmulation);
 
 		WebDriver driver = new ChromeDriver(chromeOptions);
-		System.out.println("driver launched: " + driver);
 
 		return driver;
 	}
@@ -106,7 +106,6 @@ public class BrowserFactory {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("driver launched: " + driver);
 
 		return driver;
 	}
@@ -126,7 +125,6 @@ public class BrowserFactory {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		System.out.println("driver launched: " + driver);
 
 		return driver;
 	}

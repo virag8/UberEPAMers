@@ -2,7 +2,6 @@ package test.java.testathon.tests;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.testng.Assert.assertEquals;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,9 +15,8 @@ import com.jayway.jsonpath.JsonPath;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import pojo.UiDetails;
 import test.java.testathon.framework.BaseUITest;
-import test.java.testathon.pagefactory.CovidHomePage;
+import test.java.testathon.steps.CovidUIDataFetch;
 import test.java.testathon.utils.Report;
 
 public class Covid19IndiaUIApp extends BaseUITest {
@@ -31,20 +29,9 @@ public class Covid19IndiaUIApp extends BaseUITest {
 		Report.getTest().log(Status.INFO, "Test started: testVerifyDistrict");
 
 		Report.getTest().log(Status.INFO, "Base page Launch successful");
-		CovidHomePage covidHomePage = new CovidHomePage(driverInstance.getDriver());
-		covidHomePage.sortByPositivityRate();
 
-		List<UiDetails> data = covidHomePage.getValidThreeStates(MaxStates);
-		for (int i = 0; i < data.size(); ++i) {
-			Statewise APIStateData = GetCovidResponseByState(data.get(i).getStateName());
-			assertEquals(data.get(i).getActivated().replace(",", ""), APIStateData.getActive().replace(",", ""),
-					"verify activated cases");
-			assertEquals(data.get(i).getConfirmed().replace(",", ""), APIStateData.getConfirmed().replace(",", ""),
-					"verify confirmed cases");
-			assertEquals(data.get(i).getRecovered().replace(",", ""), APIStateData.getRecovered().replace(",", ""),
-					"verify recovered cases");
-
-		}
+		CovidUIDataFetch covidUIDataFetch = new CovidUIDataFetch(driverInstance.getDriver());
+		covidUIDataFetch.getUIDataSortedByActive();
 
 	}
 

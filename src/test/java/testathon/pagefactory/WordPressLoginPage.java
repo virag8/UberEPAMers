@@ -11,7 +11,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 import org.openqa.selenium.support.PageFactory;
 
-import pojo.UiDetails;
+import pojo.StateDetails;
 
 public class WordPressLoginPage {
 
@@ -53,8 +53,8 @@ public class WordPressLoginPage {
 		return new WordPressHomePage(driver);
 	}
 
-	public List<UiDetails> getValidThreeStates(int count) throws InterruptedException {
-		List<UiDetails> statesData = new LinkedList<UiDetails>();
+	public List<StateDetails> getValidThreeStates(int count) throws InterruptedException {
+		List<StateDetails> statesData = new LinkedList<StateDetails>();
 		expand.click();
 		ratioheader.click();
 		Thread.sleep(3000);
@@ -70,7 +70,7 @@ public class WordPressLoginPage {
 				.findElements(By.xpath("//div[@class='table fadeInUp']//div[@class='row']/div[4]/div[2]"));
 
 		for (int i = 0; i < count; ++i) {
-			UiDetails data = new UiDetails();
+			StateDetails data = new StateDetails();
 			data.setRatio(ratio.get(i).getText());
 			data.setStateName(states.get(i).getText());
 			data.setConfirmed(confirmed.get(i).getText());

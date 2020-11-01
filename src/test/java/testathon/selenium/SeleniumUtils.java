@@ -47,7 +47,7 @@ public class SeleniumUtils {
 	}
 
 	public void waitforVisibilityElement(WebElement element) {
-		WebDriverWait wait = new WebDriverWait(driver, 5);
+		WebDriverWait wait = new WebDriverWait(driver, 3);
 		wait.until(ExpectedConditions.visibilityOf(element));
 	}
 

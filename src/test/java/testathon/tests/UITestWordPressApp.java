@@ -10,7 +10,7 @@ import test.java.testathon.pagefactory.WordPressHomePage;
 import test.java.testathon.pagefactory.WordPressLoginPage;
 import test.java.testathon.utils.Report;
 import java.util.List;
-import pojo.UiDetails;
+import pojo.StateDetails;
 
 public class UITestWordPressApp extends BaseUITest {
 
@@ -56,7 +56,7 @@ public class UITestWordPressApp extends BaseUITest {
 		try {
 			Report.getTest().log(Status.INFO, "Base page Launch successful");
 			WordPressLoginPage loginPage = new WordPressLoginPage(driverInstance.getDriver());
-			List<UiDetails> data=loginPage.getValidThreeStates(3);
+			List<StateDetails> data=loginPage.getValidThreeStates(3);
 			for(int i=0;i<3;++i)
 			{
 				System.out.println(data.get(i).getStateName());

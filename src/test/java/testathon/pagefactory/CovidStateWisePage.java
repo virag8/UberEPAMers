@@ -22,14 +22,15 @@ import com.jayway.jsonpath.JsonPath;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
+import pojo.DistrictDetails;
 import test.java.testathon.selenium.SeleniumUtils;
-import test.java.testathon.utils.Report;
 
 public class CovidStateWisePage {
 
+	private static final String CORONAVIRUS_OUTBREAK_IN = "Coronavirus Outbreak in";
 	protected WebDriver driver;
 	protected SeleniumUtils seleniumUtils;
-	protected ExtentTest testLogger;
+	public ExtentTest testLogger;
 
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'View all')]")
 	private WebElement btnViewAll;
@@ -40,20 +41,23 @@ public class CovidStateWisePage {
 	@FindBy(how = How.XPATH, using = "//div[@class='districts fadeInUp is-grid']")
 	private WebElement tblDistricts;
 
-	public CovidStateWisePage(WebDriver driver) {
+	@FindBy(how = How.XPATH, using = "//div[@class='navbar-middle']/a[@href='/']")
+	private WebElement lnkHome;
+
+	public CovidStateWisePage(WebDriver driver, ExtentTest testLogger) {
 		this.driver = driver;
-		seleniumUtils = new SeleniumUtils(this.driver);
-		testLogger = Report.getInstance().getTest();
+		this.seleniumUtils = new SeleniumUtils(this.driver);
+		this.testLogger = testLogger;
 		// driver.get("https://www.covid19india.org/state/BR");
 
 		// TODO Auto-generated constructor stub
-		if (!driver.getTitle().contains("Coronavirus Outbreak in")) {
+		if (!driver.getTitle().contains(CORONAVIRUS_OUTBREAK_IN)) {
 			throw new IllegalStateException(
-					"This is not Home Page of logged in user," + " current page is: " + driver.getTitle());
+					"This is not " + CORONAVIRUS_OUTBREAK_IN + " Page," + " current page is: " + driver.getTitle());
 		}
 		PageFactory.initElements(driver, this);
 
-		seleniumUtils.waitforVisibilityElement(lblStateName);
+		this.seleniumUtils.waitforVisibilityElement(lblStateName);
 
 		String pageTitle = "Coronavirus Outbreak in " + lblStateName.getText() + " - covid19india.org";
 		assertEquals(driver.getTitle().toString(), pageTitle,
@@ -61,43 +65,6 @@ public class CovidStateWisePage {
 
 		testLogger.info("Page launched: " + pageTitle);
 
-	}
-
-	public CovidStateWisePage getDistricts() {
-		// seleniumUtils.implicitwait();
-
-		if (!(driver.getCurrentUrl().contains("state/CH") || driver.getCurrentUrl().contains("state/GA"))) {
-			seleniumUtils.waitforVisibilityElement(btnViewAll);
-
-			((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", btnViewAll);
-			btnViewAll.click();
-
-			testLogger.info("state: " + lblStateName.getText());
-
-			String districtData = tblDistricts.getText().trim();
-			String[] districtDataArray = districtData.split("\n");
-
-			String expectedDistricts = GetCovidResponseByState();
-
-			List<District> lstDistrict = new ArrayList<>();
-
-			for (int i = 0; i < districtDataArray.length; i = i + 2) {
-
-				String districtName = districtDataArray[i + 1];
-				String activeCases = districtDataArray[i].replace(",", "");
-
-				District district = new District(districtName, activeCases);
-
-//				int activeExpected = GetCovidResponseByStateDist(expectedDistricts, lblStateName.getText(), districtName);
-//				assertEquals(Integer.parseInt(activeCases), activeExpected, "verification of active cases");
-
-				lstDistrict.add(district);
-
-			}
-
-			testLogger.info("Total Districts: " + lstDistrict.size());
-		}
-		return this;
 	}
 
 	public String GetCovidResponseByState() {
@@ -125,20 +92,47 @@ public class CovidStateWisePage {
 		return (int) HashMap.get("active");
 	}
 
-}
+	public void selectViewAll() {
+		this.seleniumUtils.waitforVisibilityElement(btnViewAll);
 
-class District {
-	private String districtName;
+		((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", btnViewAll);
+		btnViewAll.click();
 
-	private int activeCases;
-
-	public District(String Name, String ActiveCases) {
-		// TODO Auto-generated constructor stub
-		districtName = Name;
-		activeCases = ParseInt(ActiveCases);
+		testLogger.info("state: " + lblStateName.getText());
 	}
 
-	private int ParseInt(String ActiveCases) {
-		return Integer.parseInt(ActiveCases.replace(",", "").trim());
+	public CovidHomePage goToHomePage() {
+
+		testLogger.info("Navigating back to home page: " + lnkHome.getText());
+
+		lnkHome.click();
+		return new CovidHomePage(this.driver, this.testLogger);
+
+	}
+
+	public List<DistrictDetails> getDistrictData() {
+		String districtData = tblDistricts.getText().trim();
+		String[] districtDataArray = districtData.split("\n");
+		testLogger.info("Total Districts: " + districtDataArray.length);
+
+		List<DistrictDetails> lstDistrict = new ArrayList<>();
+
+		for (int i = 0; i < districtDataArray.length; i = i + 2) {
+
+			String districtName = districtDataArray[i + 1];
+			String activeCases = districtDataArray[i];
+
+			DistrictDetails district = new DistrictDetails();
+			district.setName(districtName);
+			district.setActive(parseActive(activeCases));
+			lstDistrict.add(district);
+
+		}
+
+		return lstDistrict;
+	}
+
+	private int parseActive(String activeCases) {
+		return Integer.parseInt(activeCases.replace(",", "").trim());
 	}
 }
