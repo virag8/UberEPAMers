@@ -30,7 +30,7 @@ public class CovidStateWisePage {
 	private static final String CORONAVIRUS_OUTBREAK_IN = "Coronavirus Outbreak in";
 	protected WebDriver driver;
 	protected SeleniumUtils seleniumUtils;
-	public ExtentTest testLogger;
+	ExtentTest testLogger;
 
 	@FindBy(how = How.XPATH, using = "//*[contains(text(),'View all')]")
 	private WebElement btnViewAll;

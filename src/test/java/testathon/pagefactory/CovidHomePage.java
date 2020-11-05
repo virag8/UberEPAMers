@@ -20,7 +20,7 @@ public class CovidHomePage {
 
 	protected WebDriver driver;
 	protected SeleniumUtils seleniumUtils;
-	public ExtentTest reportLogger;
+	private ExtentTest reportLogger;
 
 	@FindBy(how = How.XPATH, using = "//div[@class='expand-table-toggle']")
 	private WebElement expand;
@@ -42,7 +42,7 @@ public class CovidHomePage {
 
 	public CovidHomePage(WebDriver driver, ExtentTest reportLogger) {
 		this.driver = driver;
-		this.reportLogger = reportLogger;
+		this.setReportLogger(reportLogger);
 		seleniumUtils = new SeleniumUtils(driver);
 		// TODO Auto-generated constructor stub
 		driver.get("https://www.covid19india.org/");
@@ -86,7 +86,7 @@ public class CovidHomePage {
 				.findElement(By.xpath("//div[@class='state-name fadeInUp'][text()='" + stateName + "']"));
 		state.click();
 		metadata.click();
-		return new CovidStateWisePage(this.driver, this.reportLogger);
+		return new CovidStateWisePage(this.driver, this.getReportLogger());
 	}
 
 	public void sortByPositivityRate() {
@@ -99,6 +99,14 @@ public class CovidHomePage {
 		expand.click();
 		headerActive.click();
 		seleniumUtils.waitforVisibilityElement(tblFadeInUp);
+	}
+
+	public ExtentTest getReportLogger() {
+		return reportLogger;
+	}
+
+	public void setReportLogger(ExtentTest reportLogger) {
+		this.reportLogger = reportLogger;
 	}
 
 }

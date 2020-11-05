@@ -31,7 +31,7 @@ public class CovidUIDataFetch extends BaseUITest {
 		testStepReport.info("Top " + MaxStates + " states fetched");
 
 		for (int i = 0; i < states.size(); i++) {
-			covidHomePage.reportLogger = testStepReport.createNode(states.get(i).getStateName());
+			covidHomePage.setReportLogger(testStepReport.createNode(states.get(i).getStateName()));
 			CovidStateWisePage covidStateWisePage = covidHomePage.selectState(states.get(i).getStateName());
 			covidStateWisePage.selectViewAll();
 			states.get(i).setDistrictData(covidStateWisePage.getDistrictData());
